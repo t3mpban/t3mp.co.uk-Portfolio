@@ -1,41 +1,130 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity Web Player | t3mp.co.uk</title>
-  </head>
-  <body style="text-align: center; padding: 0; border: 0; margin: 0;">
-    <canvas id="unity-canvas" width=960 height=600 tabindex="-1" style="width: 960px; height: 600px; background: #231F20"></canvas>
-    <script src="Build/im getting sick of this.loader.js"></script>
+    <title>t3mp's Portfolio</title>
+    <meta favicon="https://t3mp.co.uk/images/favicon.png">
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        #unity-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        @font-face {
+            font-family: 'MCFont';
+            src: url('mc.ttf') format('truetype');
+        }
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('background.webp');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            font-family: 'MCFont', Arial, sans-serif;
+            z-index: 1000;
+            text-align: center;
+        }
+        #progress-container {
+            width: 80%;
+            max-width: 600px;
+            padding: 10px;
+        }
+        #progress-bar {
+            width: 100%;
+            height: 10px;
+            background:#808080;
+            overflow: hidden;
+            position: relative;
+            margin-top: 10px;
+        }
+        #progress-bar-fill {
+            height: 100%;
+            background: #80FF80;
+            width: 0;
+            transition: width 0.4s ease;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-overlay">
+        <div>Loading...</div>
+        <div id="progress-container">
+            <div id="progress-bar">
+                <div id="progress-bar-fill"></div>
+            </div>
+        </div>
+    </div>
+    <canvas id="unity-canvas" width="960" height="600" tabindex="-1" style="width: 960px; height: 600px; background: #231F20"></canvas>
+    <script src="Build/Build.loader.js"></script>
     <script>
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
+        function resizeCanvas() {
+            var canvas = document.querySelector("#unity-canvas");
+            canvas.style.width = window.innerWidth + "px";
+            canvas.style.height = window.innerHeight + "px";
+        }
 
-        var canvas = document.querySelector("#unity-canvas");
-        canvas.style.width = "100%";
-        canvas.style.height = "100%";
-        canvas.style.position = "fixed";
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-        document.body.style.textAlign = "left";
-      }
+        createUnityInstance(document.querySelector("#unity-canvas"), {
+            arguments: [],
+            dataUrl: "Build/Build.data",
+            frameworkUrl: "Build/Build.framework.js",
+            codeUrl: "Build/Build.wasm",
+            streamingAssetsUrl: "StreamingAssets",
+            companyName: "t3mp",
+            productName: "t3mp.co.uk",
+            productVersion: "1.0.6",
+            // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
+            // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
+        }).then(function (unityInstance) {
+            // Hide the loading overlay when Unity is fully loaded
+            document.getElementById('loading-overlay').style.display = 'none';
+        }).catch(function (message) {
+            console.error(message);
+        });
 
-      createUnityInstance(document.querySelector("#unity-canvas"), {
-        arguments: [],
-        dataUrl: "Build/im getting sick of this.data",
-        frameworkUrl: "Build/im getting sick of this.framework.js",
-        codeUrl: "Build/im getting sick of this.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "t3mp",
-        productName: "t3mp.co.uk",
-        productVersion: "1.0.12",
-        // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
-        // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
-      });
+        // Update progress bar function
+        function updateProgressBar(percentage) {
+            const progressBarFill = document.getElementById('progress-bar-fill');
+            progressBarFill.style.width = percentage + '%';
+        }
+
+        // Mock function to simulate progress updates (remove this in your actual implementation)
+        function simulateProgress() {
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                if (progress > 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                }
+                updateProgressBar(progress);
+            }, 500);
+        }
+
+        // Call the simulateProgress function to test the progress bar (remove this in your actual implementation)
+        simulateProgress();
     </script>
-  </body>
+</body>
 </html>
