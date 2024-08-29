@@ -48,7 +48,7 @@
 <body>
     <div id="loading-overlay">Loading...</div>
     <canvas id="unity-canvas" width="960" height="600" tabindex="-1" style="width: 960px; height: 600px; background: #231F20"></canvas>
-    <script src="Build/1.0.11 etc2.loader.js"></script>
+    <script src="Build/1.0.12.loader.js"></script>
     <script>
         function resizeCanvas() {
             var canvas = document.querySelector("#unity-canvas");
@@ -61,13 +61,13 @@
 
         createUnityInstance(document.querySelector("#unity-canvas"), {
             arguments: [],
-            dataUrl: "Build/1.0.11 etc2.data",
-            frameworkUrl: "Build/1.0.11 etc2.framework.js",
-            codeUrl: "Build/1.0.11 etc2.wasm",
+            dataUrl: "Build/1.0.12.data",
+            frameworkUrl: "Build/1.0.12.framework.js",
+            codeUrl: "Build/1.0.12.wasm",
             streamingAssetsUrl: "StreamingAssets",
             companyName: "t3mp",
             productName: "t3mp.co.uk",
-            productVersion: "1.0.11",
+            productVersion: "1.0.12",
             // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
             // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
         }).then(function () {
